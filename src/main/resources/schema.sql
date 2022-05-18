@@ -75,15 +75,16 @@ COMMENT ON COLUMN WAIT_LIST.created_at IS '作成日時';
 COMMENT ON COLUMN WAIT_LIST.updated_by IS '最終更新者';
 COMMENT ON COLUMN WAIT_LIST.updated_at IS '最終更新日時';
 
---最終更新日付の自動更新設定
-CREATE OR REPLACE FUNCTION set_updated_at() RETURNS TRIGGER AS $$
-BEGIN
-    IF (TG_OP = 'UPDATE') THEN
-        NEW.updated_at := now();
-        return NEW;
-    END IF;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE TRIGGER trg_store_updated_at BEFORE UPDATE ON STORE_MST FOR EACH ROW EXECUTE PROCEDURE set_updated_at();
-CREATE OR REPLACE TRIGGER trg_user_updated_at BEFORE UPDATE ON USER_MST FOR EACH ROW EXECUTE PROCEDURE set_updated_at();
+--最終更新日付の自動更新設定(下記スクリプトは、手動実行が必要)
+--CREATE OR REPLACE FUNCTION set_updated_at() RETURNS TRIGGER AS $$
+--BEGIN
+--    IF (TG_OP = 'UPDATE') THEN
+--        NEW.updated_at := now();
+--        return NEW;
+--    END IF;
+--END;
+--$$ LANGUAGE plpgsql;
+--
+--CREATE OR REPLACE TRIGGER trg_store_updated_at BEFORE UPDATE ON STORE_MST FOR EACH ROW EXECUTE PROCEDURE set_updated_at();
+--CREATE OR REPLACE TRIGGER trg_user_updated_at BEFORE UPDATE ON USER_MST FOR EACH ROW EXECUTE PROCEDURE set_updated_at();
+--CREATE OR REPLACE TRIGGER trg_wait_updated_at BEFORE UPDATE ON WAIT_LIST FOR EACH ROW EXECUTE PROCEDURE set_updated_at();
