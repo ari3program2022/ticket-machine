@@ -21,8 +21,6 @@ public class LINEMsgController {
         TextMessageContent message = event.getMessage();
         String userId = event.getSource().getUserId();
 
-        log.info("Got text message from userId:{}: event:{}", userId, event);
-
         handleTextContent(event.getReplyToken(), event, message, userId);
 
     }
@@ -35,6 +33,8 @@ public class LINEMsgController {
                  content.getEmojis());
         switch (text) {
             case "$発券処理$": {
+
+            	log.info("Got userId from userId:{}: event:{}", userId, event);
             	waitListService.register(userId);
             }
         }
