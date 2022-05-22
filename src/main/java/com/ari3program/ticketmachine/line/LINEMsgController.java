@@ -20,6 +20,9 @@ public class LINEMsgController {
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
         TextMessageContent message = event.getMessage();
         final String userId = event.getSource().getUserId();
+
+        log.info("Got text message from userId:{}: event:{}", userId, event);
+
         handleTextContent(event.getReplyToken(), event, message, userId);
 
     }
