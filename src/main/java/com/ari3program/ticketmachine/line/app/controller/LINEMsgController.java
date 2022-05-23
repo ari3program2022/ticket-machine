@@ -3,8 +3,6 @@ package com.ari3program.ticketmachine.line.app.controller;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ari3program.ticketmachine.line.domain.service.waitlist.WaitListService;
@@ -39,29 +37,26 @@ public class LINEMsgController {
 
     private void handleTextContent(String replyToken, Event event, TextMessageContent content, String userId)
             throws Exception {
-    	//lineから送られた文字列を取得
-    	String text = content.getText();
+    	//lineから送られたメッセージを取得
+    	String message = content.getText();
 
-    	log.info("Got text message from replyToken:{} text:{} emojis:{}", replyToken, text,
+    	log.info("Got text message from replyToken:{} text:{} emojis:{}", replyToken, message,
     			content.getEmojis());
     	
     	//各行をkeyとvalueに分解
-    	HashMap<String, String> map = new HashMap<String, String>();
-    	Arrays.asList(text.split("\n"))
+    	HashMap<String, String> messageMap = new HashMap<String, String>();
+    	Arrays.asList(message.split("\n"))
     	.forEach(s ->{
         	String[] key_value = s.split(":");
         	String key = key_value[0];
         	String value = key_value[1];
-        	map.put(key, value);
+        	messageMap.put(key, value);
         	log.info("split text message into key:{} value:{} ", key , value);
         } );
     	
-    	String process = map.get("処理内容");
-    	log.info("process is {}", process);
-
-        switch (process) {
-            case "$発券処理$": {
-            	waitListService.register(userId);
+        switch (messageMap.get("処理内容")) {
+            case "発券処理": {
+            	waitListService.register(userId,messageMap);
             }
         }
     }

@@ -11,6 +11,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.ari3program.ticketmachine.line.constant.WaitListStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,7 +43,7 @@ public class WaitList {
 	  private int amount;
 
 	  @Column(name="status")
-	  private String status;
+	  private WaitListStatus status;
 
 	  @Column(name="customer_id")
 	  private String customer_id;
