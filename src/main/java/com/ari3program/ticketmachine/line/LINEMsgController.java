@@ -1,6 +1,8 @@
 package com.ari3program.ticketmachine.line;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.ari3program.ticketmachine.line.service.WaitListService;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -15,6 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 public class LINEMsgController {
 
 	private WaitListService waitListService;
+
+	@Autowired
+	public LINEMsgController(WaitListService waitListService) {
+		this.waitListService = waitListService;
+	}
 
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
