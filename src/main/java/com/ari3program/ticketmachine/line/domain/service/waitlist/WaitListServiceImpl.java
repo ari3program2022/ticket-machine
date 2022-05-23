@@ -1,10 +1,9 @@
-package com.ari3program.ticketmachine.line.service.impl;
+package com.ari3program.ticketmachine.line.domain.service.waitlist;
 
 import org.springframework.stereotype.Service;
 
-import com.ari3program.ticketmachine.line.entity.WaitList;
-import com.ari3program.ticketmachine.line.repository.WaitListRepository;
-import com.ari3program.ticketmachine.line.service.WaitListService;
+import com.ari3program.ticketmachine.line.domain.model.WaitList;
+import com.ari3program.ticketmachine.line.domain.repository.WaitListRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +21,9 @@ public class WaitListServiceImpl implements WaitListService {
 	public void register(String userId) {
 
 		WaitList waitList = new WaitList();
+		waitList.setStore_id(1);//ストアマスタ実装までの暫定対応
 		waitList.setCustomer_id(userId);
+		waitList.setAmount(2);//人数
 		waitListRepository.save(waitList);
 	}
 

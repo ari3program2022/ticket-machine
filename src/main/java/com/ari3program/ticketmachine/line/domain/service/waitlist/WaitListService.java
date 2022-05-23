@@ -1,4 +1,4 @@
-package com.ari3program.ticketmachine.line.service;
+package com.ari3program.ticketmachine.line.domain.service.waitlist;
 
 public interface WaitListService {
 

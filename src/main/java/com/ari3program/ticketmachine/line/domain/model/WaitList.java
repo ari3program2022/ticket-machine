@@ -1,4 +1,4 @@
-package com.ari3program.ticketmachine.line.entity;
+package com.ari3program.ticketmachine.line.domain.model;
 
 import java.util.Date;
 
@@ -25,20 +25,20 @@ import lombok.ToString;
 public class WaitList {
 	  @Id
 	  @GeneratedValue(strategy = GenerationType.IDENTITY)
-	  private Long id;
+	  private int id;
 
 	  @Column(name="store_id")
-	  private Long store_id;
+	  private int store_id;
 
 	  @Temporal(TemporalType.DATE)
 	  @Column(name="reserve_date")
 	  private Date reserve_date;
 
 	  @Column(name="reserve_no")
-	  private Long reserve_no;
+	  private int reserve_no;
 
 	  @Column(name="amount")
-	  private Long amount;
+	  private int amount;
 
 	  @Column(name="status")
 	  private String status;
