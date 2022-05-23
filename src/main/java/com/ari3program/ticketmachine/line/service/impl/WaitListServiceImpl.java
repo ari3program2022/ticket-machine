@@ -14,6 +14,10 @@ public class WaitListServiceImpl implements WaitListService {
 
 	private WaitListRepository waitListRepository;
 
+	public WaitListServiceImpl(WaitListRepository waitListRepository) {
+		this.waitListRepository = waitListRepository;
+	}
+
 	@Override
 	public void register(String userId) {
 
