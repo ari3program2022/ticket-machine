@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.ari3program.ticketmachine.line.domain.model.StoreMst;
+import com.ari3program.ticketmachine.line.domain.service.storemst.StoreMstService;
 import com.ari3program.ticketmachine.line.domain.service.waitlist.WaitListService;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -18,12 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 @LineMessageHandler
 public class LINEMsgController {
 
-	private WaitListService waitListService;
-
 	@Autowired
-	public LINEMsgController(WaitListService waitListService) {
-		this.waitListService = waitListService;
-	}
+	private WaitListService waitListService;
+	
+	@Autowired
+	private StoreMstService storeMstService;
 
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
@@ -37,7 +38,9 @@ public class LINEMsgController {
 
     private void handleTextContent(String replyToken, Event event, TextMessageContent content, String userId)
             throws Exception {
-    	int store_id = 1;//店舗マスタ実装までの暫定対応
+    	//店舗マスタの取得
+    	String bot_id = "1654168790"; //テスト用コード
+    	StoreMst storeMst = storeMstService.findMyStoreMst(bot_id);//店舗マスタ実装までの暫定対応
     	
     	//lineから送られたメッセージを取得
     	String message = content.getText();
@@ -58,7 +61,7 @@ public class LINEMsgController {
     	
         switch (messageMap.get("処理内容")) {
             case "発券処理": {
-            	waitListService.register(userId,messageMap,store_id);
+            	waitListService.register(userId,messageMap,storeMst.getId());
             }
         }
     }
