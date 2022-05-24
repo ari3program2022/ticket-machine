@@ -2,8 +2,7 @@ package com.ari3program.ticketmachine.line.domain.service.waitlist;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Optional;
-
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ari3program.ticketmachine.line.constant.WaitListStatus;
@@ -22,22 +21,22 @@ public class WaitListServiceImpl implements WaitListService {
 	}
 
 	@Override
-	public void register(String userId, HashMap<String, String> messageMap) {
+	public void register(String userId, HashMap<String, String> messageMap, int store_id) {
 		
+		Date today = new Date();
 		
 		WaitList waitList = new WaitList();
 		waitList.setCustomer_id(userId);
 		waitList.setAmount(Integer.parseInt(messageMap.get("人数")));
-		waitList.setStore_id(Integer.parseInt(messageMap.get("店舗ID")));
-		Date today = new Date();
+		waitList.setStore_id(store_id);
 		waitList.setReserve_date(today);
 		waitList.setStatus(WaitListStatus.WAIT);
 		
-		Optional<WaitList> waitListOpt = waitListRepository.findByStoreCustomerDate(1, userId, today);
-		if(waitListOpt.isPresent()) {
-			log.info("既に発券済みです。store_id:{} userId:{} reserve_date:{}",1,userId,today);
-		}else {
+		List<WaitList> myWaitList = waitListRepository.myFindWaitList(store_id, today, userId);
+		if(myWaitList.size() == 0) {
 			waitListRepository.save(waitList);
+		}else {
+			log.info("既に発券済みです。store_id:{} reserve_date:{} userId:{}",store_id,today,today);
 		}
 	}
 }

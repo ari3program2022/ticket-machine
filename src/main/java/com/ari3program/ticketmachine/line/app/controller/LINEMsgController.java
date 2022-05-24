@@ -37,6 +37,8 @@ public class LINEMsgController {
 
     private void handleTextContent(String replyToken, Event event, TextMessageContent content, String userId)
             throws Exception {
+    	int store_id = 1;//店舗マスタ実装までの暫定対応
+    	
     	//lineから送られたメッセージを取得
     	String message = content.getText();
 
@@ -56,7 +58,7 @@ public class LINEMsgController {
     	
         switch (messageMap.get("処理内容")) {
             case "発券処理": {
-            	waitListService.register(userId,messageMap);
+            	waitListService.register(userId,messageMap,store_id);
             }
         }
     }

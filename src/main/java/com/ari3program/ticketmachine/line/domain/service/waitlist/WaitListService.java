@@ -4,6 +4,6 @@ import java.util.HashMap;
 
 public interface WaitListService {
 
-	void register(String userId, HashMap<String, String> messageMap);
+	void register(String userId, HashMap<String, String> messageMap, int store_id);
 
 }
