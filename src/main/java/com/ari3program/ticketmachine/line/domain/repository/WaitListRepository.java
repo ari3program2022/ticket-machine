@@ -13,8 +13,8 @@ import com.ari3program.ticketmachine.line.domain.model.WaitList;
 @Repository
 public interface WaitListRepository extends JpaRepository<WaitList, Long> {
 	
-	@Query("SELECT a FROM WaitList a WHERE a.store_id = :store_id and a.reserve_date = :reserve_date and a.customer_id = :customer_id")
+	@Query("SELECT a FROM WaitList a WHERE a.storeId = :storeId and a.reserveDate = :reserveDate and a.customerId = :customerId")
     List<WaitList> myFindWaitList(
-            @Param("store_id") int store_id, @Param("reserve_date") Date reserve_date, @Param("customer_id") String customer_id);
+            @Param("storeId") int storeId, @Param("reserveDate") Date reserveDate, @Param("customerId") String customerId);
 
 }

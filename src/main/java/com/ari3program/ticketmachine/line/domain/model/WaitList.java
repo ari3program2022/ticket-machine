@@ -32,14 +32,14 @@ public class WaitList {
 	  private int id;
 
 	  @Column(name="store_id")
-	  private int store_id;
+	  private int storeId;
 
 	  @Temporal(TemporalType.DATE)
 	  @Column(name="reserve_date")
-	  private Date reserve_date;
+	  private Date reserveDate;
 
 	  @Column(name="reserve_no")
-	  private int reserve_no;
+	  private int reserveNo;
 
 	  @Column(name="amount")
 	  private int amount;
@@ -49,6 +49,6 @@ public class WaitList {
 	  private WaitListStatus status;
 
 	  @Column(name="customer_id")
-	  private String customer_id;
+	  private String customerId;
 
 }

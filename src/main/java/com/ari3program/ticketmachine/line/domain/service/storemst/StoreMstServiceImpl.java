@@ -25,7 +25,7 @@ public class StoreMstServiceImpl implements StoreMstService {
 			return result.get(0);
 		}else {
 			log.warn("対象のSTORE_MSTが見つかりません。 bot_id:{}", bot_id);
-			throw new StoreMstNotFoundException("対象のSTORE_MSTが見つかりません。");
+			throw new StoreMstNotFoundException("対象のSTORE_MSTが見つかりません。　bot_id:"+ bot_id);
 		}
 	}
 

@@ -21,7 +21,7 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"name", "bot_id"})
+@ToString(exclude = {"name", "botId"})
 public class StoreMst {
 	@Id
 	  @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +32,11 @@ public class StoreMst {
 	
 	@Temporal(TemporalType.TIME)
 	@Column(name="open_time")
-	  private Date open_time;
+	  private Date openTime;
 	
 	@Temporal(TemporalType.TIME)
 	@Column(name="close_time")
-	  private Date close_time;
+	  private Date closeTime;
 	
 	@Column(name="bot_id")
 	  private String botId;

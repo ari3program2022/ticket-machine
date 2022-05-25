@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ari3program.ticketmachine.line.constant.WaitListStatus;
+import com.ari3program.ticketmachine.line.domain.model.StoreMst;
 import com.ari3program.ticketmachine.line.domain.model.WaitList;
 import com.ari3program.ticketmachine.line.domain.repository.WaitListRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -21,22 +22,25 @@ public class WaitListServiceImpl implements WaitListService {
 	}
 
 	@Override
-	public void register(String userId, HashMap<String, String> messageMap, int store_id) {
+	public void register(String userId, HashMap<String, String> messageMap, StoreMst storeMst) {
 		
 		Date today = new Date();
+		int store_id = storeMst.getId();
 		
 		WaitList waitList = new WaitList();
-		waitList.setCustomer_id(userId);
+		waitList.setCustomerId(userId);
 		waitList.setAmount(Integer.parseInt(messageMap.get("人数")));
-		waitList.setStore_id(store_id);
-		waitList.setReserve_date(today);
+		waitList.setStoreId(store_id);
+		waitList.setReserveDate(today);
 		waitList.setStatus(WaitListStatus.WAIT);
 		
+		//同一店×来店日×ユーザーで発券済みかを確認。
 		List<WaitList> myWaitList = waitListRepository.myFindWaitList(store_id, today, userId);
 		if(myWaitList.size() == 0) {
 			waitListRepository.save(waitList);
 		}else {
 			log.info("既に発券済みです。store_id:{} reserve_date:{} userId:{}",store_id,today,today);
+			throw new WaitListFoundException("既に発券済みです。store_id:"+ store_id +" reserve_date:"+today+" userId:"+ userId); 
 		}
 	}
 }
