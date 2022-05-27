@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.ari3program.ticketmachine.line.domain.model.MaxReserveNo;
 import com.ari3program.ticketmachine.line.domain.model.WaitList;
 
 @Repository
