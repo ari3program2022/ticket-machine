@@ -63,9 +63,11 @@ public class LINEMsgController {
 		Arrays.asList(text.split("\n")).forEach(s -> {
 			String[] key_value = s.split(":");
 			String key = key_value[0];
-			String value = key_value[1];
-			messageMap.put(key, value);
-			log.info("split text message into key:{} value:{} ", key, value);
+			if(Objects.nonNull(key_value[1])) {
+				String value = key_value[1];				
+				messageMap.put(key, value);
+				log.info("split text message into key:{} value:{} ", key, value);
+			}
 		});
 
 
@@ -96,7 +98,7 @@ public class LINEMsgController {
 			break;
 			
 		default:
-            log.info("Returns message that non support message replyToken:{} text:{}", replyToken, text);
+            log.info("non support keywords-> replyToken:{} text:{}", replyToken, text);
             this.replyText(
                     replyToken,
                     "サポートされていないキーワードを受信しました。画面下部のリッチメニューからボタンを押してみてください。"
