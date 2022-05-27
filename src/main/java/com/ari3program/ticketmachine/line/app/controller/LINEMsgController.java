@@ -42,7 +42,7 @@ public class LINEMsgController {
 	@Autowired
 	private StoreMstService storeMstService;
 
-	@Value("${line.bot.chenelid}")
+	@Value("${line.bot.channelId}")
 	String channelId;
 
 	@EventMapping

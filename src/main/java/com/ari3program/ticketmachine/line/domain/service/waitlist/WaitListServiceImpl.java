@@ -29,7 +29,7 @@ public class WaitListServiceImpl implements WaitListService {
 		waitList.setCustomerId(userId);
 		waitList.setAmount(Integer.parseInt(messageMap.get("人数")));
 		waitList.setStatus(WaitListStatus.WAIT);
-		waitList.setReserveNo(waitList.getReserveNo());
+		waitList.setReserveNo(waitList.getReserveNo()+1);
 		
 		return waitListRepository.save(waitList);
 	}
