@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ari3program.ticketmachine.line.constant.WaitListStatus;
-import com.ari3program.ticketmachine.line.domain.model.StoreMst;
 import com.ari3program.ticketmachine.line.domain.model.WaitList;
 import com.ari3program.ticketmachine.line.domain.repository.WaitListRepository;
 import lombok.extern.slf4j.Slf4j;
