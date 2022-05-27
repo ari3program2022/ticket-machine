@@ -19,13 +19,13 @@ public class StoreMstServiceImpl implements StoreMstService {
 	}
 	
 	@Override
-	public StoreMst findMyStoreMst(String bot_id) {
-		List <StoreMst> result = storeMstRepository.findByBotId(bot_id);
+	public StoreMst findMyStoreMst(String channel_id) {
+		List <StoreMst> result = storeMstRepository.findByChannelId(channel_id);
 		if(result.size() == 1) {
 			return result.get(0);
 		}else {
-			log.warn("対象のSTORE_MSTが見つかりません。 bot_id:{}", bot_id);
-			throw new StoreMstNotFoundException("対象のSTORE_MSTが見つかりません。　bot_id:"+ bot_id);
+			log.warn("対象のSTORE_MSTが見つかりません。 channel_id:{}", channel_id);
+			throw new StoreMstNotFoundException("対象のSTORE_MSTが見つかりません。　channel_id:"+ channel_id);
 		}
 	}
 
