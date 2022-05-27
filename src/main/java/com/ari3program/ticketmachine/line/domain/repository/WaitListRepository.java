@@ -23,7 +23,7 @@ public interface WaitListRepository extends JpaRepository<WaitList, Long> {
 	List<MaxReserveNo> getMaxReserveNoObjects(
             @Param("storeId") int storeId, @Param("reserveDate") Date reserveDate);
 	
-	default int getMaxReserveNo(int storeId, Date reserveDate, String customerId) {
+	default int getMaxReserveNo(int storeId, Date reserveDate) {
 		List<MaxReserveNo> maxReserveNoList = getMaxReserveNoObjects(storeId, reserveDate);
 		
 		if(Objects.isNull(maxReserveNoList.get(0).getSum())) {
