@@ -15,8 +15,6 @@ public class MaxReserveNo {
 	
 	private Date reserveDate;
 	
-	private String customerId;
-	
 	private int sum;
 
 }
