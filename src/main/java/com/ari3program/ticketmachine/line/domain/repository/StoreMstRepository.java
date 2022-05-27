@@ -10,6 +10,6 @@ import com.ari3program.ticketmachine.line.domain.model.StoreMst;
 @Repository
 public interface StoreMstRepository  extends JpaRepository<StoreMst, Long>{
 	
-	List<StoreMst> findBychannelId(String channelId);
+	List<StoreMst> findByChannelId(String channelId);
 
 }
