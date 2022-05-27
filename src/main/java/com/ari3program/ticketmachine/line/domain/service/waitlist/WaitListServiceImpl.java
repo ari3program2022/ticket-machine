@@ -22,25 +22,32 @@ public class WaitListServiceImpl implements WaitListService {
 	}
 
 	@Override
-	public void register(String userId, HashMap<String, String> messageMap, StoreMst storeMst) {
-		
-		Date today = new Date();
-		int store_id = storeMst.getId();
+	public WaitList register(int store_id, Date today, String userId, HashMap<String, String> messageMap) {
 		
 		WaitList waitList = new WaitList();
-		waitList.setCustomerId(userId);
-		waitList.setAmount(Integer.parseInt(messageMap.get("人数")));
 		waitList.setStoreId(store_id);
 		waitList.setReserveDate(today);
+		waitList.setCustomerId(userId);
+		waitList.setAmount(Integer.parseInt(messageMap.get("人数")));
 		waitList.setStatus(WaitListStatus.WAIT);
+		waitList.setReserveNo(waitList.getReserveNo());
 		
+		return waitListRepository.save(waitList);
+	}
+
+	@Override
+	public WaitList existsMyWaitList(int store_id, Date today, String userId) {
+		List<WaitList> myWaitList = waitListRepository.findMyWaitList(store_id, today, userId);
+
 		//同一店×来店日×ユーザーで発券済みかを確認。
-		List<WaitList> myWaitList = waitListRepository.myFindWaitList(store_id, today, userId);
 		if(myWaitList.size() == 0) {
-			waitListRepository.save(waitList);
+			log.info("未発券です。store_id:{} reserve_date:{} userId:{}", store_id, today, userId);
+			return null;
 		}else {
-			log.info("既に発券済みです。store_id:{} reserve_date:{} userId:{}",store_id,today,today);
-			throw new WaitListFoundException("既に発券済みです。store_id:"+ store_id +" reserve_date:"+today+" userId:"+ userId); 
+			log.info("既に発券済みです。store_id:{} reserve_date:{} userId:{}", store_id, today, userId);
+			return myWaitList.get(0);
 		}
 	}
+	
+	
 }
