@@ -19,23 +19,20 @@ public interface WaitListRepository extends JpaRepository<WaitList, Long> {
     List<WaitList> findMyWaitList(
             @Param("storeId") int storeId, @Param("reserveDate") Date reserveDate, @Param("customerId") String customerId);
 	
-//	@Query("SELECT a.storeId, a.reserveDate, MAX(a.reserveNo) as sum FROM WaitList a WHERE a.storeId = :storeId and a.reserveDate = :reserveDate group by a.storeId, a.reserveDate")
-//	List<MaxReserveNo> getMaxReserveNoObjects(
-//            @Param("storeId") int storeId, @Param("reserveDate") Date reserveDate);
-//	
-//	default int getMaxReserveNo(int storeId, Date reserveDate) {
-//		List<MaxReserveNo> maxReserveNoList = getMaxReserveNoObjects(storeId, reserveDate);
-//		
-//		if(Objects.isNull(maxReserveNoList.get(0).getSum())) {
-//			return 1;
-//		}else {
-//			return maxReserveNoList.get(0).getSum();			
-//		}
-//	}
-	
 	@Query("SELECT MAX(a.reserveNo) as sum FROM WaitList a WHERE a.storeId = :storeId and a.reserveDate = :reserveDate")
-	int getMaxReserveNo(
-            @Param("storeId") int storeId, @Param("reserveDate") Date reserveDate);
+	int getMaxReserveNoObjects(
+			@Param("storeId") int storeId, @Param("reserveDate") Date reserveDate);
+	
+	default int getMaxReserveNo(int storeId, Date reserveDate) {
+		int maxReserveNo = getMaxReserveNoObjects(storeId, reserveDate);
+		
+		if(Objects.isNull(maxReserveNo)) {
+			return 0;
+		}else {
+			return maxReserveNo;			
+		}
+	}
+	
 
 
 }
