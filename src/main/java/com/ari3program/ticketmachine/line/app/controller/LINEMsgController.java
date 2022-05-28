@@ -62,8 +62,8 @@ public class LINEMsgController {
 		HashMap<String, String> messageMap = new HashMap<String, String>();
 		Arrays.asList(text.split("\n")).forEach(s -> {
 			String[] key_value = s.split(":");
-			String key = key_value[0];
-			if(Objects.nonNull(key_value[1])) {
+			if(key_value.length==2) {
+				String key = key_value[0];
 				String value = key_value[1];				
 				messageMap.put(key, value);
 				log.info("split text message into key:{} value:{} ", key, value);
