@@ -75,7 +75,7 @@ public class LINEMsgController {
 			switch (messageMap.get("処理内容")) {
 			case "発券処理": 
 				//オープン時間かをチェック
-				Time currentTime = (Time) today;
+				@SuppressWarnings("deprecation") Time currentTime = new Time(today.getHours(), today.getMinutes(), today.getSeconds());
 				if(!storeMstService.isStoreOpen(storeMst, currentTime)) {
 					this.replyText(
 							replyToken,
