@@ -69,42 +69,44 @@ public class LINEMsgController {
 				log.info("split text message into key:{} value:{} ", key, value);
 			}
 		});
-
-
-		switch (messageMap.get("処理内容")) {
-		case "発券処理": 
-			//発券済みかをチェック
-			WaitList myWaitList = waitListService.existsMyWaitList(store_id, today, userId);
-			if(Objects.nonNull(myWaitList)) { 
-				this.replyText(
-	                    replyToken,
-	                    "既に発券済みです。整理券番号:" + myWaitList.getReserveNo()
-	            );
+		
+		if(Objects.nonNull(messageMap.get("処理内容"))) {
+			switch (messageMap.get("処理内容")) {
+			case "発券処理": 
+				//発券済みかをチェック
+				WaitList myWaitList = waitListService.existsMyWaitList(store_id, today, userId);
+				if(Objects.nonNull(myWaitList)) { 
+					this.replyText(
+							replyToken,
+							"既に発券済みです。整理券番号:" + myWaitList.getReserveNo()
+							);
+					break;
+				}
+				//整理券を発券
+				WaitList insertResult = waitListService.register(store_id, today, userId, messageMap);
+				if(Objects.isNull(insertResult.getId())) {
+					this.replyText(
+							replyToken,
+							"申し訳ございません。整理券の発行に失敗しました。もう一度発券ボタンを押してください。"
+							);
+				}else {
+					this.replyText(
+							replyToken,
+							"整理券を発券しました。整理券番号:" + insertResult.getReserveNo()
+							);
+				}
 				break;
-			}
-			//整理券を発券
-			WaitList insertResult = waitListService.register(store_id, today, userId, messageMap);
-			if(Objects.isNull(insertResult.getId())) {
+				
+			default:
+				log.info("non support keywords-> replyToken:{} text:{}", replyToken, text);
 				this.replyText(
 						replyToken,
-						"申し訳ございません。整理券の発行に失敗しました。もう一度発券ボタンを押してください。"
+						"サポートされていないキーワードを受信しました。画面下部のリッチメニューからボタンを押してみてください。"
 						);
-			}else {
-				this.replyText(
-						replyToken,
-						"整理券を発券しました。整理券番号:" + insertResult.getReserveNo()
-						);
+				break;	
 			}
-			break;
-			
-		default:
-            log.info("non support keywords-> replyToken:{} text:{}", replyToken, text);
-            this.replyText(
-                    replyToken,
-                    "サポートされていないキーワードを受信しました。画面下部のリッチメニューからボタンを押してみてください。"
-            );
-            break;	
 		}
+
 	}
 
 	private void reply(@NonNull String replyToken, @NonNull Message message) {
