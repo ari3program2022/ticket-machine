@@ -98,13 +98,19 @@ public class LINEMsgController {
 				break;
 				
 			default:
-				log.info("non support keywords-> replyToken:{} text:{}", replyToken, text);
+				log.info("non support process-> 処理内容:{}", messageMap.get("処理内容"));
 				this.replyText(
 						replyToken,
-						"サポートされていないキーワードを受信しました。画面下部のリッチメニューからボタンを押してみてください。"
+						"処理内容：" + messageMap.get("処理内容")
 						);
 				break;	
 			}
+		}else {
+			log.info("non support keywords-> replyToken:{} text:{}", replyToken, text);
+			this.replyText(
+					replyToken,
+					"サポートされていないキーワードを受信しました。画面下部のリッチメニューからボタンを押してみてください。"
+					);
 		}
 
 	}
