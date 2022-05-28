@@ -11,17 +11,17 @@ import org.springframework.stereotype.Repository;
 import com.ari3program.ticketmachine.line.domain.model.StoreMst;
 
 @Repository
-public interface StoreMstRepository  extends JpaRepository<StoreMst, Long>{
+public interface StoreMstRepository  extends JpaRepository<StoreMst, Integer>{
 	
 	List<StoreMst> findByChannelId(String channelId);
 	
 
 	@Query("SELECT a FROM StoreMst a WHERE a.id = :id and :currentTime between a.openTime and a.closeTime")
-    List<StoreMst> openStoreList(
-            @Param("storeId") int storeId, @Param("currentTime") Time currentTime);
+    List<StoreMst> isOpenStoreList(
+            @Param("id") int id, @Param("currentTime") Time currentTime);
 	
 	default boolean isOpenStore(int storeId, Time currentTime) {
-		List<StoreMst> openStoreList = openStoreList(storeId, currentTime);
+		List<StoreMst> openStoreList = isOpenStoreList(storeId, currentTime);
 		
 		if(openStoreList.size() == 0) {
 			return false;
