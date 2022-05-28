@@ -1,5 +1,6 @@
 package com.ari3program.ticketmachine.line.domain.service.storemst;
 
+import java.sql.Time;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,11 @@ public class StoreMstServiceImpl implements StoreMstService {
 			log.warn("対象のSTORE_MSTが見つかりません。 channel_id:{}", channel_id);
 			throw new StoreMstNotFoundException("対象のSTORE_MSTが見つかりません。　channel_id:"+ channel_id);
 		}
+	}
+	
+	@Override
+	public boolean isStoreOpen(StoreMst storeMst, Time currentTime) {
+		return storeMstRepository.isOpenStore(storeMst.getId() , currentTime);
 	}
 
 }

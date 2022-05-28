@@ -2,6 +2,7 @@ package com.ari3program.ticketmachine.line.app.controller;
 
 import static java.util.Collections.singletonList;
 
+import java.sql.Time;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -73,6 +74,16 @@ public class LINEMsgController {
 		if(Objects.nonNull(messageMap.get("処理内容"))) {
 			switch (messageMap.get("処理内容")) {
 			case "発券処理": 
+				//オープン時間かをチェック
+				Time currentTime = (Time) today;
+				if(!storeMstService.isStoreOpen(storeMst, currentTime)) {
+					this.replyText(
+							replyToken,
+							"営業時間外です。開店時間:"+ storeMst.getOpenTime()
+							+ " 閉店時間:"+ storeMst.getCloseTime()
+							);
+				}
+				
 				//発券済みかをチェック
 				WaitList myWaitList = waitListService.existsMyWaitList(store_id, today, userId);
 				if(Objects.nonNull(myWaitList)) { 
@@ -101,7 +112,7 @@ public class LINEMsgController {
 				log.info("non support process-> 処理内容:{}", messageMap.get("処理内容"));
 				this.replyText(
 						replyToken,
-						"処理内容：" + messageMap.get("処理内容")
+						"こちらの処理は、サポートされておりません。処理内容：" + messageMap.get("処理内容")
 						);
 				break;	
 			}

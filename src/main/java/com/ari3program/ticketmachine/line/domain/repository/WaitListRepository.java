@@ -22,6 +22,7 @@ public interface WaitListRepository extends JpaRepository<WaitList, Long> {
 	Integer getMaxReserveNoObjects(
 			@Param("storeId") int storeId, @Param("reserveDate") Date reserveDate);
 	
+	
 	default int getMaxReserveNo(int storeId, Date reserveDate) {
 		Integer maxReserveNo = getMaxReserveNoObjects(storeId, reserveDate);
 		
@@ -31,7 +32,5 @@ public interface WaitListRepository extends JpaRepository<WaitList, Long> {
 			return maxReserveNo;			
 		}
 	}
-	
-
 
 }
