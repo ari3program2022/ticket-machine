@@ -88,11 +88,7 @@ public class LINEMsgController {
 				//発券済みかをチェック
 				WaitList myWaitList = waitListService.existsMyWaitList(store_id, today, userId);
 				if(Objects.nonNull(myWaitList)) { 
-//					this.replyText(
-//							replyToken,
-//							"既に発券済みです。整理券番号:" + myWaitList.getReserveNo()
-//							);
-					this.reply(replyToken, new IssueTicketResponse(myWaitList).get());
+					this.reply(replyToken, new IssueTicketResponse(myWaitList, false).get());
 					break;
 				}
 				//整理券を発券
@@ -103,10 +99,7 @@ public class LINEMsgController {
 							"申し訳ございません。整理券の発行に失敗しました。もう一度発券ボタンを押してください。"
 							);
 				}else {
-					this.replyText(
-							replyToken,
-							"整理券を発券しました。整理券番号:" + insertResult.getReserveNo()
-							);
+					this.reply(replyToken, new IssueTicketResponse(myWaitList, true).get());
 				}
 				break;
 				

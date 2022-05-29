@@ -26,9 +26,15 @@ import lombok.NoArgsConstructor;
 public class IssueTicketResponse implements Supplier<FlexMessage> {
 	
 	private WaitList waitList;
+	
+	private boolean newFlg;
+	
 
 	@Override
 	public FlexMessage get() {
+		
+		final Box headerBlock = createHeaderBlock();
+		
         final Image heroBlock =
                 Image.builder()
                      .url(URI.create("https://thumb.ac-illust.com/e7/e7f7fddc608d85e79a0f0e965ef7507c_t.jpeg"))
@@ -39,12 +45,31 @@ public class IssueTicketResponse implements Supplier<FlexMessage> {
 //        final Box footerBlock = createFooterBlock();
         final Bubble bubble =
                 Bubble.builder()
+                      .header(headerBlock)
                       .hero(heroBlock)
                       .body(bodyBlock)
 //                      .footer(footerBlock)
                       .build();
 
         return new FlexMessage("ALT", bubble);
+	}
+	
+	private Box createHeaderBlock() {
+		if(newFlg == false) {
+			final Text title =
+	                Text.builder()
+	                    .text("既に発券済みです。")
+	                    .build();
+			
+			return Box.builder()
+	                  .layout(FlexLayout.VERTICAL)
+	                  .backgroundColor("#fff3cd")
+	                  .contents(asList(title))
+	                  .build();
+		}else {
+			return null;
+		}
+		
 	}
 	
 	private Box createBodyBlock() {
@@ -59,6 +84,7 @@ public class IssueTicketResponse implements Supplier<FlexMessage> {
 
         final Box review = createNumberBox();
 
+        
         return Box.builder()
                   .layout(FlexLayout.VERTICAL)
                   .contents(asList(title, review))
