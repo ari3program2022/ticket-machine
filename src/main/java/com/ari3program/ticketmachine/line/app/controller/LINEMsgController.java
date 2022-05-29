@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.ari3program.ticketmachine.line.app.resource.IssueTicketResponse;
 import com.ari3program.ticketmachine.line.domain.model.StoreMst;
 import com.ari3program.ticketmachine.line.domain.model.WaitList;
 import com.ari3program.ticketmachine.line.domain.service.storemst.StoreMstService;
@@ -87,10 +88,11 @@ public class LINEMsgController {
 				//発券済みかをチェック
 				WaitList myWaitList = waitListService.existsMyWaitList(store_id, today, userId);
 				if(Objects.nonNull(myWaitList)) { 
-					this.replyText(
-							replyToken,
-							"既に発券済みです。整理券番号:" + myWaitList.getReserveNo()
-							);
+//					this.replyText(
+//							replyToken,
+//							"既に発券済みです。整理券番号:" + myWaitList.getReserveNo()
+//							);
+					this.reply(replyToken, new IssueTicketResponse(myWaitList).get());
 					break;
 				}
 				//整理券を発券

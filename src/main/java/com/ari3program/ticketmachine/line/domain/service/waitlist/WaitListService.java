@@ -1,10 +1,8 @@
 package com.ari3program.ticketmachine.line.domain.service.waitlist;
 
-import java.sql.Time;
 import java.util.Date;
 import java.util.HashMap;
 
-import com.ari3program.ticketmachine.line.domain.model.StoreMst;
 import com.ari3program.ticketmachine.line.domain.model.WaitList;
 
 public interface WaitListService {
