@@ -52,6 +52,7 @@ public class ErrorMessageResponse implements Supplier<FlexMessage> {
                 .contents(asList(
                         Text.builder()
                             .text(message)
+                            .wrap(true)
                             .build()
                 ))
                 .build();
