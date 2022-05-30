@@ -13,6 +13,8 @@ import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.ari3program.ticketmachine.line.app.resource.ClosedStoreResponse;
+import com.ari3program.ticketmachine.line.app.resource.ErrorMessageResponse;
 import com.ari3program.ticketmachine.line.app.resource.IssueTicketResponse;
 import com.ari3program.ticketmachine.line.domain.model.StoreMst;
 import com.ari3program.ticketmachine.line.domain.model.WaitList;
@@ -23,7 +25,6 @@ import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.Message;
-import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
@@ -78,11 +79,8 @@ public class LINEMsgController {
 				//オープン時間かをチェック
 				@SuppressWarnings("deprecation") Time currentTime = new Time(today.getHours(), today.getMinutes(), today.getSeconds());
 				if(!storeMstService.isStoreOpen(storeMst, currentTime)) {
-					this.replyText(
-							replyToken,
-							"営業時間外です。開店時間:"+ storeMst.getOpenTime()
-							+ " 閉店時間:"+ storeMst.getCloseTime()
-							);
+					this.reply(replyToken, new ClosedStoreResponse(storeMst).get());
+					break;
 				}
 				
 				//発券済みかをチェック
@@ -94,29 +92,20 @@ public class LINEMsgController {
 				//整理券を発券
 				WaitList insertResult = waitListService.register(store_id, today, userId, messageMap);
 				if(Objects.isNull(insertResult.getId())) {
-					this.replyText(
-							replyToken,
-							"申し訳ございません。整理券の発行に失敗しました。もう一度発券ボタンを押してください。"
-							);
+					this.reply(replyToken, new ErrorMessageResponse("申し訳ございません。\n整理券の発行に失敗しました。\nもう一度発券ボタンを押してください。").get());
 				}else {
-					this.reply(replyToken, new IssueTicketResponse(myWaitList, true).get());
+					this.reply(replyToken, new IssueTicketResponse(insertResult, true).get());
 				}
 				break;
 				
 			default:
 				log.info("non support process-> 処理内容:{}", messageMap.get("処理内容"));
-				this.replyText(
-						replyToken,
-						"こちらの処理は、サポートされておりません。処理内容：" + messageMap.get("処理内容")
-						);
+				this.reply(replyToken, new ErrorMessageResponse("こちらの処理は、\nサポートされておりません。\n処理内容：" + messageMap.get("処理内容")).get());
 				break;	
 			}
 		}else {
 			log.info("non support keywords-> replyToken:{} text:{}", replyToken, text);
-			this.replyText(
-					replyToken,
-					"サポートされていないキーワードを受信しました。画面下部のリッチメニューからボタンを押してみてください。"
-					);
+			this.reply(replyToken, new ErrorMessageResponse("サポートされていない\nキーワードを受信しました。\n画面下部のリッチメニューから\nボタンを押してみてください。").get());
 		}
 
 	}
@@ -139,14 +128,14 @@ public class LINEMsgController {
 		}
 	}
 
-	private void replyText(@NonNull String replyToken, @NonNull String message) {
-		if (replyToken.isEmpty()) {
-			throw new IllegalArgumentException("replyToken must not be empty");
-		}
-		if (message.length() > 1000) {
-			message = message.substring(0, 1000 - 2) + "……";
-		}
-		this.reply(replyToken, new TextMessage(message));
-	}
+//	private void replyText(@NonNull String replyToken, @NonNull String message) {
+//		if (replyToken.isEmpty()) {
+//			throw new IllegalArgumentException("replyToken must not be empty");
+//		}
+//		if (message.length() > 1000) {
+//			message = message.substring(0, 1000 - 2) + "……";
+//		}
+//		this.reply(replyToken, new TextMessage(message));
+//	}
 
 }
