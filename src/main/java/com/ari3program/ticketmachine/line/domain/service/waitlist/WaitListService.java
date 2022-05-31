@@ -10,4 +10,6 @@ public interface WaitListService {
 	WaitList register(int store_id,Date today, String userId, HashMap<String, String> messageMap);
 	
 	WaitList existsMyWaitList(int store_id,Date today, String userId);
+	
+	int getWaitAmount(WaitList waitList);
 }

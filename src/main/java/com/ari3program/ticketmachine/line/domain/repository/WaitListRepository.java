@@ -18,10 +18,18 @@ public interface WaitListRepository extends JpaRepository<WaitList, Long> {
     List<WaitList> findMyWaitList(
             @Param("storeId") int storeId, @Param("reserveDate") Date reserveDate, @Param("customerId") String customerId);
 	
+	@Query("SELECT a FROM WaitList a WHERE a.storeId = :storeId and a.reserveDate = :reserveDate　and a.WaitListStatus= 'WAIT' order by a.reserveNo")
+    List<WaitList> findTodayWaitList(
+            @Param("storeId") int storeId, @Param("reserveDate") Date reserveDate);
+	
 	@Query("SELECT MAX(a.reserveNo) as sum FROM WaitList a WHERE a.storeId = :storeId and a.reserveDate = :reserveDate")
 	Integer getMaxReserveNoObjects(
 			@Param("storeId") int storeId, @Param("reserveDate") Date reserveDate);
 	
+	default int getWaitAmount(WaitList waitList) {
+		List<WaitList> findTodayWaitList = findTodayWaitList(waitList.getStoreId(), waitList.getReserveDate());
+		return findTodayWaitList.indexOf(waitList);
+	}
 	
 	default int getMaxReserveNo(int storeId, Date reserveDate) {
 		Integer maxReserveNo = getMaxReserveNoObjects(storeId, reserveDate);

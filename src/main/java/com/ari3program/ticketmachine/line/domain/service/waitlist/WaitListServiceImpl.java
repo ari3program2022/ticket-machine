@@ -47,6 +47,13 @@ public class WaitListServiceImpl implements WaitListService {
 			return myWaitList.get(0);
 		}
 	}
+
+	@Override
+	public int getWaitAmount(WaitList waitList) {
+		return waitListRepository.getWaitAmount(waitList);
+	}
+	
+	
 	
 	
 }

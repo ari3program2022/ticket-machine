@@ -27,6 +27,8 @@ public class IssueTicketResponse implements Supplier<FlexMessage> {
 	
 	private WaitList waitList;
 	
+	private int waitAmount;
+	
 	private boolean newFlg;
 	
 
@@ -108,9 +110,27 @@ public class IssueTicketResponse implements Supplier<FlexMessage> {
                 ))
                 .build();
         
+        final Box amount = Box
+                .builder()
+                .layout(FlexLayout.BASELINE)
+                .contents(asList(
+                        Text.builder()
+                            .text("待ち状況")
+                            .color("#aaaaaa")
+                            .flex(1)
+                            .build(),
+                        Text.builder()
+                            .text(String.valueOf(waitAmount) + "組待ち")
+                            .color("#666666")
+                            .size(FlexFontSize.XXXXXL)
+                            .flex(5)
+                            .build()
+                ))
+                .build();
+        
         return Box.builder()
                   .layout(FlexLayout.VERTICAL)
-                  .contents(asList(number))
+                  .contents(asList(number,amount))
                   .build();
     }
 
