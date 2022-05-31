@@ -95,7 +95,7 @@ public class LINEMsgController {
 				if(Objects.isNull(insertResult.getId())) {
 					this.reply(replyToken, new ErrorMessageResponse("申し訳ございません。\n整理券の発行に失敗しました。\nもう一度発券ボタンを押してください。").get());
 				}else {
-					int waitAmount = waitListService.getWaitAmount(myWaitList);
+					int waitAmount = waitListService.getWaitAmount(insertResult);
 					this.reply(replyToken, new IssueTicketResponse(insertResult, waitAmount, true).get());
 				}
 				break;
