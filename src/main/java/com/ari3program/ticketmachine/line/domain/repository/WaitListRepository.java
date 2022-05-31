@@ -18,7 +18,7 @@ public interface WaitListRepository extends JpaRepository<WaitList, Long> {
     List<WaitList> findMyWaitList(
             @Param("storeId") int storeId, @Param("reserveDate") Date reserveDate, @Param("customerId") String customerId);
 	
-	@Query("SELECT a FROM WaitList a WHERE a.storeId = :storeId and a.reserveDate = :reserveDate　and a.WaitListStatus= 'WAIT' order by a.reserveNo")
+	@Query("SELECT a FROM WaitList a WHERE a.storeId = :storeId and a.reserveDate = :reserveDate and a.status = 'WAIT' ORDER BY a.reserveNo ASC")
     List<WaitList> findTodayWaitList(
             @Param("storeId") int storeId, @Param("reserveDate") Date reserveDate);
 	
