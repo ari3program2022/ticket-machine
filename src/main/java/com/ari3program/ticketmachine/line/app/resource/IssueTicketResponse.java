@@ -105,7 +105,7 @@ public class IssueTicketResponse implements Supplier<FlexMessage> {
                             .text(String.valueOf(waitList.getReserveNo()))
                             .color("#666666")
                             .size(FlexFontSize.XXXXXL)
-                            .flex(5)
+                            .flex(2)
                             .build()
                 ))
                 .build();
