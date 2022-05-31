@@ -12,4 +12,6 @@ public interface WaitListService {
 	WaitList existsMyWaitList(int store_id,Date today, String userId);
 	
 	int getWaitAmount(WaitList waitList);
+	
+	void cancelMyWaitList(WaitList waitList);
 }

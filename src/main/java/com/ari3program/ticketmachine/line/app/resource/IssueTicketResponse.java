@@ -5,16 +5,21 @@ import static java.util.Arrays.asList;
 import java.net.URI;
 import java.util.function.Supplier;
 import com.ari3program.ticketmachine.line.domain.model.WaitList;
+import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.message.FlexMessage;
 import com.linecorp.bot.model.message.flex.component.Box;
+import com.linecorp.bot.model.message.flex.component.Button;
+import com.linecorp.bot.model.message.flex.component.Button.ButtonStyle;
 import com.linecorp.bot.model.message.flex.component.Image;
 import com.linecorp.bot.model.message.flex.component.Image.ImageSize;
+import com.linecorp.bot.model.message.flex.component.Spacer;
 import com.linecorp.bot.model.message.flex.component.Text;
 import com.linecorp.bot.model.message.flex.component.Text.TextWeight;
 import com.linecorp.bot.model.message.flex.container.Bubble;
 import com.linecorp.bot.model.message.flex.unit.FlexAlign;
 import com.linecorp.bot.model.message.flex.unit.FlexFontSize;
 import com.linecorp.bot.model.message.flex.unit.FlexLayout;
+import com.linecorp.bot.model.message.flex.unit.FlexMarginSize;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,16 +49,20 @@ public class IssueTicketResponse implements Supplier<FlexMessage> {
                      .build();
 
         final Box bodyBlock = createBodyBlock();
+        final Box footerBlock = createFooterBlock();
+        
         final Bubble bubble =
                 Bubble.builder()
                       .header(headerBlock)
                       .hero(heroBlock)
                       .body(bodyBlock)
+                      .footer(footerBlock)
                       .build();
 
         return new FlexMessage("ALT", bubble);
 	}
 	
+
 	private Box createHeaderBlock() {
 		if(newFlg == false) {
 			final Text title =
@@ -134,6 +143,21 @@ public class IssueTicketResponse implements Supplier<FlexMessage> {
                   .build();
     }
 
+	private Box createFooterBlock() {
+		
+		final Spacer spacer = Spacer.builder().size(FlexMarginSize.SM).build();
+        final Button callAction = Button
+                .builder()
+                .style(ButtonStyle.SECONDARY)
+                .action(new MessageAction( "キャンセル", "処理内容:キャンセル"))
+                .build();
+		
+        return Box.builder()
+                .layout(FlexLayout.VERTICAL)
+                .spacing(FlexMarginSize.SM)
+                .contents(asList(spacer, callAction))
+                .build();
+	}
 
 
 }

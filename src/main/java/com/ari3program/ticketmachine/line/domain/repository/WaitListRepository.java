@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -25,6 +26,10 @@ public interface WaitListRepository extends JpaRepository<WaitList, Long> {
 	@Query("SELECT MAX(a.reserveNo) as sum FROM WaitList a WHERE a.storeId = :storeId and a.reserveDate = :reserveDate")
 	Integer getMaxReserveNoObjects(
 			@Param("storeId") int storeId, @Param("reserveDate") Date reserveDate);
+	
+	@Modifying
+	@Query("UPDATE WaitList a set a.status = 'CANCEL' where a.id = :id")
+	void cancelMyWaitList(@Param("id") int id);
 	
 	default int getWaitAmount(WaitList waitList) {
 		List<WaitList> findTodayWaitList = findTodayWaitList(waitList.getStoreId(), waitList.getReserveDate());

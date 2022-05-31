@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.ari3program.ticketmachine.line.app.resource.CancelResultResponse;
 import com.ari3program.ticketmachine.line.app.resource.ClosedStoreResponse;
 import com.ari3program.ticketmachine.line.app.resource.ErrorMessageResponse;
 import com.ari3program.ticketmachine.line.app.resource.IssueTicketResponse;
@@ -104,6 +105,16 @@ public class LINEMsgController {
 					this.reply(replyToken, new IssueTicketResponse(insertResult, waitAmount, true).get());
 				}
 				break;
+				
+			case "キャンセル":
+				//発券済みかをチェック
+				WaitList cancelMyWaitList = waitListService.existsMyWaitList(store_id, today, userId);
+				if(Objects.isNull(cancelMyWaitList)) {
+					this.reply(replyToken, new ErrorMessageResponse("キャンセル済み、\nもしくは未発券のため\nキャンセルできませんでした。").get());
+				}else {
+					waitListService.cancelMyWaitList(cancelMyWaitList);
+					this.reply(replyToken, new CancelResultResponse().get());
+				}
 				
 			default:
 				log.info("non support process-> 処理内容:{}", messageMap.get("処理内容"));

@@ -52,6 +52,11 @@ public class WaitListServiceImpl implements WaitListService {
 	public int getWaitAmount(WaitList waitList) {
 		return waitListRepository.getWaitAmount(waitList);
 	}
+
+	@Override
+	public void cancelMyWaitList(WaitList waitList) {
+		waitListRepository.cancelMyWaitList(waitList.getId());
+	}
 	
 	
 	
