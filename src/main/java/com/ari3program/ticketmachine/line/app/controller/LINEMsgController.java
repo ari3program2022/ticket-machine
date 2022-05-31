@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import com.ari3program.ticketmachine.line.app.resource.ClosedStoreResponse;
 import com.ari3program.ticketmachine.line.app.resource.ErrorMessageResponse;
 import com.ari3program.ticketmachine.line.app.resource.IssueTicketResponse;
+import com.ari3program.ticketmachine.line.app.resource.SelectAmountResponse;
 import com.ari3program.ticketmachine.line.domain.model.StoreMst;
 import com.ari3program.ticketmachine.line.domain.model.WaitList;
 import com.ari3program.ticketmachine.line.domain.service.storemst.StoreMstService;
@@ -75,6 +76,10 @@ public class LINEMsgController {
 		
 		if(Objects.nonNull(messageMap.get("処理内容"))) {
 			switch (messageMap.get("処理内容")) {
+			case "人数選択":
+				this.reply(replyToken, new SelectAmountResponse().get());
+				break;
+			
 			case "発券処理": 
 				//オープン時間かをチェック
 				@SuppressWarnings("deprecation") Time currentTime = new Time(today.getHours(), today.getMinutes(), today.getSeconds());
