@@ -122,8 +122,8 @@ public class IssueTicketResponse implements Supplier<FlexMessage> {
                         Text.builder()
                             .text(String.valueOf(waitAmount) + "組待ち")
                             .color("#666666")
-                            .size(FlexFontSize.XXXL)
-                            .flex(5)
+                            .size(FlexFontSize.XXL)
+                            .flex(2)
                             .build()
                 ))
                 .build();
