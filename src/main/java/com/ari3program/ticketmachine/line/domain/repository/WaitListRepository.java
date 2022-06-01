@@ -17,7 +17,7 @@ import com.ari3program.ticketmachine.line.domain.model.WaitList;
 @Repository
 public interface WaitListRepository extends JpaRepository<WaitList, Long> {
 	
-	@Query("SELECT a FROM WaitList a WHERE a.storeId = :storeId and a.reserveDate = :reserveDate and a.customerId = :customerId")
+	@Query("SELECT a FROM WaitList a WHERE a.storeId = :storeId and a.reserveDate = :reserveDate and a.customerId = :customerId and a.status = 'WAIT' ")
     List<WaitList> findMyWaitList(
             @Param("storeId") int storeId, @Param("reserveDate") Date reserveDate, @Param("customerId") String customerId);
 	
@@ -33,9 +33,24 @@ public interface WaitListRepository extends JpaRepository<WaitList, Long> {
 	@Query("UPDATE WaitList a set a.status = 'CANCEL' where a.id = :id")
 	void cancelMyWaitList(@Param("id") int id);
 	
-	default int getWaitAmount(WaitList waitList) {
+	default WaitList existsMyWaitList(int store_id, Date today, String userId) {
+		List<WaitList> myWaitList = findMyWaitList(store_id, today, userId);
+
+		if(myWaitList.size() == 0) {
+			return null;
+		}else {
+			return myWaitList.get(0);
+		}
+	}
+	
+	default int getMyWaitAmount(WaitList waitList) {
 		List<WaitList> findTodayWaitList = findTodayWaitList(waitList.getStoreId(), waitList.getReserveDate());
 		return findTodayWaitList.indexOf(waitList) + 1;
+	}
+	
+	default int getWaitAmount(int storeId, Date reserveDate) {
+		List<WaitList> findTodayWaitList = findTodayWaitList(storeId, reserveDate);
+		return findTodayWaitList.size();
 	}
 	
 	default int getMaxReserveNo(int storeId, Date reserveDate) {

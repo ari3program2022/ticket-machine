@@ -13,13 +13,9 @@ import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.ari3program.ticketmachine.line.app.resource.CancelResultResponse;
-import com.ari3program.ticketmachine.line.app.resource.ClosedStoreResponse;
 import com.ari3program.ticketmachine.line.app.resource.ErrorMessageResponse;
-import com.ari3program.ticketmachine.line.app.resource.IssueTicketResponse;
 import com.ari3program.ticketmachine.line.app.resource.SelectAmountResponse;
 import com.ari3program.ticketmachine.line.domain.model.StoreMst;
-import com.ari3program.ticketmachine.line.domain.model.WaitList;
 import com.ari3program.ticketmachine.line.domain.service.storemst.StoreMstService;
 import com.ari3program.ticketmachine.line.domain.service.waitlist.WaitListService;
 import com.linecorp.bot.client.LineMessagingClient;
@@ -60,6 +56,8 @@ public class LINEMsgController {
 		int store_id = storeMst.getId();
 		log.info("Got MY StoreMst from application.properties ->channelId:{} storeId:{}", channelId, store_id);
 		Date today = new Date();
+		@SuppressWarnings("deprecation") Time currentTime = new Time(today.getHours(), today.getMinutes(), today.getSeconds());
+		Message response = null;
 		
 		//メッセージの各行をkeyとvalueに分解
 		TextMessageContent message = event.getMessage();
@@ -75,56 +73,33 @@ public class LINEMsgController {
 			}
 		});
 		
+		
 		if(Objects.nonNull(messageMap.get("処理内容"))) {
 			switch (messageMap.get("処理内容")) {
 			case "人数選択":
-				this.reply(replyToken, new SelectAmountResponse().get());
+				response = new SelectAmountResponse().get();
 				break;
 			
 			case "発券処理": 
-				//オープン時間かをチェック
-				@SuppressWarnings("deprecation") Time currentTime = new Time(today.getHours(), today.getMinutes(), today.getSeconds());
-				if(!storeMstService.isStoreOpen(storeMst, currentTime)) {
-					this.reply(replyToken, new ClosedStoreResponse(storeMst).get());
-					break;
-				}
-				
-				//発券済みかをチェック
-				WaitList myWaitList = waitListService.existsMyWaitList(store_id, today, userId);
-				if(Objects.nonNull(myWaitList)) { 
-					int waitAmount = waitListService.getWaitAmount(myWaitList);
-					this.reply(replyToken, new IssueTicketResponse(myWaitList, waitAmount, false).get());
-					break;
-				}
-				//整理券を発券
-				WaitList insertResult = waitListService.register(store_id, today, userId, messageMap);
-				if(Objects.isNull(insertResult.getId())) {
-					this.reply(replyToken, new ErrorMessageResponse("申し訳ございません。\n整理券の発行に失敗しました。\nもう一度発券ボタンを押してください。").get());
-				}else {
-					int waitAmount = waitListService.getWaitAmount(insertResult);
-					this.reply(replyToken, new IssueTicketResponse(insertResult, waitAmount, true).get());
-				}
+				response = waitListService.issueTicket(storeMst, store_id, today, currentTime, userId, messageMap);
 				break;
 				
 			case "キャンセル":
-				//発券済みかをチェック
-				WaitList cancelMyWaitList = waitListService.existsMyWaitList(store_id, today, userId);
-				if(Objects.isNull(cancelMyWaitList)) {
-					this.reply(replyToken, new ErrorMessageResponse("キャンセル済み、\nもしくは未発券のため\nキャンセルできませんでした。").get());
-				}else {
-					waitListService.cancelMyWaitList(cancelMyWaitList);
-					this.reply(replyToken, new CancelResultResponse().get());
-				}
+				response = waitListService.cancelTicket(store_id, today, userId);
+				break;
 				
+			case "待ち時間確認":
+				response = waitListService.checkWaitAmount(store_id, today, userId);
+				break;
 			default:
-				log.info("non support process-> 処理内容:{}", messageMap.get("処理内容"));
-				this.reply(replyToken, new ErrorMessageResponse("こちらの処理は、\nサポートされておりません。\n処理内容：" + messageMap.get("処理内容")).get());
+				response = new ErrorMessageResponse("こちらの処理は、\nサポートされておりません。\n処理内容：" + messageMap.get("処理内容")).get();
 				break;	
 			}
 		}else {
-			log.info("non support keywords-> replyToken:{} text:{}", replyToken, text);
-			this.reply(replyToken, new ErrorMessageResponse("サポートされていない\nキーワードを受信しました。\n画面下部のリッチメニューから\nボタンを押してみてください。").get());
+			response = new ErrorMessageResponse("サポートされていない\nキーワードを受信しました。\n画面下部のリッチメニューから\nボタンを押してみてください。").get();
 		}
+		
+		this.reply(replyToken, response);
 
 	}
 
@@ -145,15 +120,5 @@ public class LINEMsgController {
 			throw new RuntimeException(e);
 		}
 	}
-
-//	private void replyText(@NonNull String replyToken, @NonNull String message) {
-//		if (replyToken.isEmpty()) {
-//			throw new IllegalArgumentException("replyToken must not be empty");
-//		}
-//		if (message.length() > 1000) {
-//			message = message.substring(0, 1000 - 2) + "……";
-//		}
-//		this.reply(replyToken, new TextMessage(message));
-//	}
 
 }

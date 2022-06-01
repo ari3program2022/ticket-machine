@@ -1,17 +1,17 @@
 package com.ari3program.ticketmachine.line.domain.service.waitlist;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.HashMap;
 
-import com.ari3program.ticketmachine.line.domain.model.WaitList;
+import com.ari3program.ticketmachine.line.domain.model.StoreMst;
+import com.linecorp.bot.model.message.Message;
 
 public interface WaitListService {
+	
+	Message issueTicket(StoreMst storeMst, int store_id, Date today, Time currentTime, String userId, HashMap<String, String> messageMap);
+	
+	Message checkWaitAmount(int store_id, Date today, String userId);
 
-	WaitList register(int store_id,Date today, String userId, HashMap<String, String> messageMap);
-	
-	WaitList existsMyWaitList(int store_id,Date today, String userId);
-	
-	int getWaitAmount(WaitList waitList);
-	
-	void cancelMyWaitList(WaitList waitList);
+	Message cancelTicket(int store_id, Date today, String userId);
 }
