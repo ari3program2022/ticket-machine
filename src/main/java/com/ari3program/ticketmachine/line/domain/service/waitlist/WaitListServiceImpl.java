@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ari3program.ticketmachine.line.app.resource.CancelResultResponse;
 import com.ari3program.ticketmachine.line.app.resource.ClosedStoreResponse;
@@ -33,6 +34,7 @@ public class WaitListServiceImpl implements WaitListService {
 	private StoreMstService storeMstService;
 	
 	
+	@Transactional
 	@Override
 	public Message issueTicket(StoreMst storeMst, int store_id, Date today, Time currentTime, String userId,
 			HashMap<String, String> messageMap) {
@@ -63,6 +65,7 @@ public class WaitListServiceImpl implements WaitListService {
 		}
 	}
 
+	@Transactional
 	@Override
 	public Message checkWaitAmount(int store_id, Date today, String userId) {
 		
@@ -74,11 +77,12 @@ public class WaitListServiceImpl implements WaitListService {
 		}else {
 			//自分が呼ばれるまでの待ち人数を取得する
 			int waitAmount = waitListRepository.getMyWaitAmount(waitResult);
-			return new IssueTicketResponse(waitResult, waitAmount, true).get();
+			return new IssueTicketResponse(waitResult, waitAmount, false).get();
 		}
 	}
 
 
+	@Transactional
 	@Override
 	public Message cancelTicket(int store_id, Date today, String userId) {		
 		WaitList cancelMyWaitList = waitListRepository.existsMyWaitList(store_id, today, userId);
@@ -86,7 +90,7 @@ public class WaitListServiceImpl implements WaitListService {
 			return new ErrorMessageResponse("キャンセル済み、\nもしくは未発券のため\nキャンセルできませんでした。").get();
 		}else {
 			log.info("チケットをキャンセルします。 waitList:{}", cancelMyWaitList);
-			waitListRepository.cancelMyWaitList(cancelMyWaitList.getId());
+			waitListRepository.cancelMyWaitList(cancelMyWaitList.getId(), userId);
 			return new CancelResultResponse().get();
 		}
 	}
@@ -99,6 +103,8 @@ public class WaitListServiceImpl implements WaitListService {
 		waitList.setCustomerId(userId);
 		waitList.setAmount(Integer.parseInt(messageMap.get("人数")));
 		waitList.setStatus(WaitListStatus.WAIT);
+		waitList.setCreatedBy(userId);
+		waitList.setUpdatedBy(userId);
 		waitList.setReserveNo(waitListRepository.getMaxReserveNo(store_id, today)+1);
 		
 		return waitListRepository.save(waitList);

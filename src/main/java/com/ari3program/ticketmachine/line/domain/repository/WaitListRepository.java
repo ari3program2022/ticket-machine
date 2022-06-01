@@ -9,11 +9,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.ari3program.ticketmachine.line.domain.model.WaitList;
 
-@Transactional
 @Repository
 public interface WaitListRepository extends JpaRepository<WaitList, Long> {
 	
@@ -30,8 +27,8 @@ public interface WaitListRepository extends JpaRepository<WaitList, Long> {
 			@Param("storeId") int storeId, @Param("reserveDate") Date reserveDate);
 	
 	@Modifying
-	@Query("UPDATE WaitList a set a.status = 'CANCEL' where a.id = :id")
-	void cancelMyWaitList(@Param("id") int id);
+	@Query("UPDATE WaitList a set a.status = 'CANCEL', a.updatedBy = :userId where a.id = :id")
+	void cancelMyWaitList(@Param("id") int id, @Param("userId") String userId);
 	
 	default WaitList existsMyWaitList(int store_id, Date today, String userId) {
 		List<WaitList> myWaitList = findMyWaitList(store_id, today, userId);
@@ -45,7 +42,7 @@ public interface WaitListRepository extends JpaRepository<WaitList, Long> {
 	
 	default int getMyWaitAmount(WaitList waitList) {
 		List<WaitList> findTodayWaitList = findTodayWaitList(waitList.getStoreId(), waitList.getReserveDate());
-		return findTodayWaitList.indexOf(waitList) + 1;
+		return findTodayWaitList.indexOf(waitList);
 	}
 	
 	default int getWaitAmount(int storeId, Date reserveDate) {

@@ -61,8 +61,7 @@ CREATE TABLE IF NOT EXISTS WAIT_LIST (
     updated_by character varying(100) DEFAULT 'SYSTEM' NOT NULL,
     updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     PRIMARY KEY(id),
-    foreign key (store_id) references STORE_MST(id),
-    unique(store_id,reserve_date,customer_id)
+    foreign key (store_id) references STORE_MST(id)
 );
 
 COMMENT ON TABLE WAIT_LIST IS '順番待ちリスト';

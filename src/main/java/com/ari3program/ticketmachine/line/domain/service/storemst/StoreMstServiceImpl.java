@@ -2,6 +2,8 @@ package com.ari3program.ticketmachine.line.domain.service.storemst;
 
 import java.sql.Time;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ari3program.ticketmachine.line.domain.model.StoreMst;
@@ -13,11 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class StoreMstServiceImpl implements StoreMstService {
 	
+	@Autowired
 	private StoreMstRepository storeMstRepository;
 	
-	public StoreMstServiceImpl(StoreMstRepository storeMstRepository) {
-		this.storeMstRepository = storeMstRepository;
-	}
 	
 	@Override
 	public StoreMst findMyStoreMst(String channel_id) {

@@ -50,5 +50,12 @@ public class WaitList {
 
 	  @Column(name="customer_id")
 	  private String customerId;
+	  
+	  @Column(name="created_by")
+	  private String createdBy;
+	  
+	  @Column(name="updated_by")
+	  private String updatedBy;
+	  
 
 }

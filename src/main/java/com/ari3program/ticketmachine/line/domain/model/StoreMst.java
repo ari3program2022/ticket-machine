@@ -40,5 +40,11 @@ public class StoreMst {
 	
 	@Column(name="channel_id")
 	  private String channelId;
-
+	
+	@Column(name="created_by")
+	  private String createdBy;
+	
+	@Column(name="updated_by")
+	  private String updatedBy;
+	  
 }
