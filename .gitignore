@@ -38,5 +38,9 @@ out/
 
 ### custom ###
 src/main/resources/application.properties
+<<<<<<< HEAD
 
+=======
+**/.DS_Store
+>>>>>>> heroku-develop
 
