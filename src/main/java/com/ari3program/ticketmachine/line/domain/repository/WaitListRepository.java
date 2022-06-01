@@ -42,7 +42,7 @@ public interface WaitListRepository extends JpaRepository<WaitList, Long> {
 	
 	default int getMyWaitAmount(WaitList waitList) {
 		List<WaitList> findTodayWaitList = findTodayWaitList(waitList.getStoreId(), waitList.getReserveDate());
-		return findTodayWaitList.indexOf(waitList);
+		return findTodayWaitList.indexOf(waitList) + 1;
 	}
 	
 	default int getWaitAmount(int storeId, Date reserveDate) {

@@ -124,12 +124,30 @@ public class IssueTicketResponse implements Supplier<FlexMessage> {
                 .layout(FlexLayout.BASELINE)
                 .contents(asList(
                         Text.builder()
-                            .text("待ち状況")
+                            .text("人数")
                             .color("#aaaaaa")
                             .flex(1)
                             .build(),
                         Text.builder()
-                            .text(String.valueOf(waitAmount) + "組待ち")
+                            .text(String.valueOf(waitList.getAmount() + "名様"))
+                            .color("#666666")
+                            .size(FlexFontSize.XXXXXL)
+                            .flex(2)
+                            .build()
+                ))
+                .build();
+        
+        final Box order = Box
+                .builder()
+                .layout(FlexLayout.BASELINE)
+                .contents(asList(
+                        Text.builder()
+                            .text("待ち順")
+                            .color("#aaaaaa")
+                            .flex(1)
+                            .build(),
+                        Text.builder()
+                            .text(String.valueOf(waitAmount) + "組目")
                             .color("#666666")
                             .size(FlexFontSize.XXL)
                             .flex(2)
@@ -139,7 +157,7 @@ public class IssueTicketResponse implements Supplier<FlexMessage> {
         
         return Box.builder()
                   .layout(FlexLayout.VERTICAL)
-                  .contents(asList(number,amount))
+                  .contents(asList(number,amount, order))
                   .build();
     }
 
