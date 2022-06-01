@@ -89,7 +89,7 @@ public class LINEMsgController {
 				break;
 				
 			case "待ち時間確認":
-				response = waitListService.checkWaitAmount(store_id, today, userId);
+				response = waitListService.checkWaitAmount(storeMst, store_id, today, currentTime, userId);
 				break;
 			default:
 				response = new ErrorMessageResponse("こちらの処理は、\nサポートされておりません。\n処理内容：" + messageMap.get("処理内容")).get();

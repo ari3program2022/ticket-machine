@@ -67,7 +67,13 @@ public class WaitListServiceImpl implements WaitListService {
 
 	@Transactional
 	@Override
-	public Message checkWaitAmount(int store_id, Date today, String userId) {
+	public Message checkWaitAmount(StoreMst storeMst, int store_id, Date today, Time currentTime, String userId) {
+		
+		//営業時間外の場合は、その旨メッセージを返す
+		if(!storeMstService.isStoreOpen(storeMst, currentTime)) {
+			log.info("営業時間外です。 現在時刻:{} 営業開始:{} 営業終了:{}",currentTime, storeMst.getOpenTime(), storeMst.getCloseTime());
+			return new ClosedStoreResponse(storeMst).get();
+		}
 		
 		WaitList waitResult = waitListRepository.existsMyWaitList(store_id, today, userId);
 		if(Objects.isNull(waitResult)) {

@@ -11,7 +11,7 @@ public interface WaitListService {
 	
 	Message issueTicket(StoreMst storeMst, int store_id, Date today, Time currentTime, String userId, HashMap<String, String> messageMap);
 	
-	Message checkWaitAmount(int store_id, Date today, String userId);
+	Message checkWaitAmount(StoreMst storeMst,int store_id, Date today, Time currentTime, String userId);
 
 	Message cancelTicket(int store_id, Date today, String userId);
 }
