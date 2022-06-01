@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ari3program.ticketmachine.line.app.resource.CancelResultResponse;
@@ -25,13 +26,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WaitListServiceImpl implements WaitListService {
 
+	@Autowired
 	private WaitListRepository waitListRepository;
 	
+	@Autowired
 	private StoreMstService storeMstService;
 	
-	public WaitListServiceImpl(WaitListRepository waitListRepository) {
-		this.waitListRepository = waitListRepository;
-	}
 	
 	@Override
 	public Message issueTicket(StoreMst storeMst, int store_id, Date today, Time currentTime, String userId,
