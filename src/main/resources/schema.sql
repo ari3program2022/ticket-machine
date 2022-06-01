@@ -1,35 +1,21 @@
 CREATE TABLE IF NOT EXISTS STORE_MST (
     id serial NOT NULL,
-<<<<<<< HEAD
-    name character varying(100),
-    open_time time,
-    close_time time,
-=======
     name character varying(100) unique,
     open_time time,
     close_time time,
     channel_id character varying(100) unique,
->>>>>>> heroku-develop
     created_by character varying(100) DEFAULT 'SYSTEM' NOT NULL,
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_by character varying(100) DEFAULT 'SYSTEM' NOT NULL,
     updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-<<<<<<< HEAD
-    PRIMARY KEY(id),
-    UNIQUE(name)
-=======
     PRIMARY KEY(id)
->>>>>>> heroku-develop
 );
 
 COMMENT ON TABLE STORE_MST IS '店舗マスタ';
 COMMENT ON COLUMN STORE_MST.name IS '店舗名';
 COMMENT ON COLUMN STORE_MST.open_time IS '営業開始時間';
 COMMENT ON COLUMN STORE_MST.close_time IS '営業終了時間';
-<<<<<<< HEAD
-=======
 COMMENT ON COLUMN STORE_MST.channel_id IS 'チャネルID';
->>>>>>> heroku-develop
 COMMENT ON COLUMN STORE_MST.created_by IS '作成者';
 COMMENT ON COLUMN STORE_MST.created_at IS '作成日時';
 COMMENT ON COLUMN STORE_MST.updated_by IS '最終更新者';
@@ -68,13 +54,8 @@ CREATE TABLE IF NOT EXISTS WAIT_LIST (
     reserve_date date DEFAULT CURRENT_TIMESTAMP,
     reserve_no integer,
     amount integer,
-<<<<<<< HEAD
-    status character varying(10),
-    customer_id character varying(10),
-=======
     status character varying(50),
     customer_id character varying(100),
->>>>>>> heroku-develop
     created_by character varying(100) DEFAULT 'SYSTEM' NOT NULL,
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_by character varying(100) DEFAULT 'SYSTEM' NOT NULL,
