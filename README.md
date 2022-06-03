@@ -1,11 +1,6 @@
 # ticket-machine
 LINE上で整理券を発行できるウェブアプリケーションです。
 
-# LINEBotアカウント
-## Heroku開発環境
-@746yzuom
-![image](https://user-images.githubusercontent.com/105266080/171437205-99ecd61d-88f6-406b-925f-9e94a98e882b.png)
-
 # 制作背景
 ポートフォリオとして作成しており、商用利用の目的はございません。
 本作品を通して、以下の技術スタックの証明いたします。
@@ -13,14 +8,17 @@ LINE上で整理券を発行できるウェブアプリケーションです。
 ## [使用技術]
 - spring boot、Javaの基礎知識
 - SQLを含めた、DBの基礎知識
-- web API利用知識
-- SDKを使った開発経験
+- web APIの基本知識
+- SDKを使った開発
 - Gitを使ったチーム開発
-- AWSをつかったアプリケーションの構築（対応中）
+- Github issueの活用
+- AWSをつかったアプリケーションの構築（VPC,EC2,ALB,RDS,Cloud Formationなどを利用）
 
 # システム構成
-## AWS本番構成(対応中)
-<img width="753" alt="image" src="https://user-images.githubusercontent.com/105266080/171443584-628d9390-7d07-45bf-b92a-cea174fbdc9d.png">
+## AWS本番構成(費用がかかるため、現在停止中)
+- クラウドフォーメーションで作成しました。テンプレートファイルは(ticket-machine/aws)にございます。
+- 管理者画面の機能は、現在未実装です。
+<img width="749" alt="image" src="https://user-images.githubusercontent.com/105266080/171902192-1a3cac9c-9b3d-4fa5-baec-6f9e0abfe258.png">
 
 ## Heroku開発環境
 <img width="575" alt="image" src="https://user-images.githubusercontent.com/105266080/171443731-10f1b9c4-d0a2-4627-8def-8a07b364a54d.png">
@@ -40,5 +38,10 @@ LINE上で整理券を発行できるウェブアプリケーションです。
 <img width="618" alt="image" src="https://user-images.githubusercontent.com/105266080/171424299-14133cab-8a9d-4070-ab85-6734bc2d3ab9.png">
 
 ## テーブル相関図
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/105266080/171444633-2288b423-4d3c-42bc-8cf5-1ef358abe73b.png">
+<img width="496" alt="image" src="https://user-images.githubusercontent.com/105266080/171902693-6ac3657c-93c6-444f-ae8a-b3c5c1333cf1.png">
+
+# LINEBotアカウント
+## Heroku開発環境
+@746yzuom
+![image](https://user-images.githubusercontent.com/105266080/171437205-99ecd61d-88f6-406b-925f-9e94a98e882b.png)
 
