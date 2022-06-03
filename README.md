@@ -1,6 +1,9 @@
 # ticket-machine
 LINE上で整理券を発行できるウェブアプリケーションです。
 
+![sample2](https://user-images.githubusercontent.com/105266080/171906576-0c5bf923-6c75-4972-9a01-a3fd8f9483cc.gif)
+
+
 # 制作背景
 ポートフォリオとして作成しており、商用利用の目的はございません。
 本作品を通して、以下の技術スタックの証明いたします。
