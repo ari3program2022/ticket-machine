@@ -63,7 +63,7 @@ Parameters:
     Default: "web"
   EC2InstanceAMI:
     Type: String
-    Default: ""
+    Default: "ami-02c3627b04781eada"
   EC2InstanceInstanceType:
     Type: String
     Default: "t2.micro"
@@ -134,6 +134,7 @@ Resources:
       UserData: !Base64 | 
         #! /bin/bash
         yum update -y
+        yum install -y java-1.8.0-openjdk.x86_64
 
 # ------------------------------------------------------------#
 #  EC2Instance AZ:C
@@ -163,6 +164,7 @@ Resources:
       UserData: !Base64 |
         #! /bin/bash
         yum update -y
+        yum install -y java-1.8.0-openjdk.x86_64
 
 # ------------------------------------------------------------#
 #  SecurityGroup for Managed
